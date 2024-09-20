@@ -2,22 +2,26 @@ const SignUp = () => {
   return (
     <div className="pt-52 pb-80 bg-gray-100">
       <h1 className="text-3xl font-semibold text-center">Бүртгүүлэх</h1>
-      <div className="ml-[600px] mr-[500px] gap-3 ">
+      <div className="ml-[45%] mr-[45%] gap-3 ">
         <input
           className="btn border rounded-xl w-60 flex mb-4 mt-6 pl-2 h-9 "
-          placeholder="Нэр" type="password"
+          placeholder="Нэр"
+          type="password"
         ></input>
         <input
           className="btn border rounded-xl w-60 flex mb-4 pl-2 h-9"
-          placeholder="Имэйл хаяг" type="password"
+          placeholder="Имэйл хаяг"
+          type="password"
         ></input>
         <input
           className="btn border rounded-xl w-60 flex mb-4 mt-6 pl-2 h-9 "
-          placeholder="Нууц Үг" type="password"
+          placeholder="Нууц Үг"
+          type="password"
         ></input>
         <input
           className="btn border rounded-xl w-60 flex mb-4 mt-6 pl-2 h-9 "
-          placeholder=" Нууц үг давтах" type="password"
+          placeholder=" Нууц үг давтах"
+          type="password"
         ></input>
         <div className="text-red-600 pb-2 text-xs">
           <p>Том үсэг орсон байх</p>

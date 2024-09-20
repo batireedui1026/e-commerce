@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { IoIosCall } from "react-icons/io";
 import { FaRegMessage } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa";
@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <div className="bg-black">
       <div className="flex justify-between mx-24  pb-6  text-white text-xl pt-10">
-        <p>logo</p>
+        <img src="/pi.png"></img>
         <div className="flex items-center">
           <div className="flex gap-2 pr-24 text-white ">
             <IoIosCall />
