@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-
+// import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
 interface IUser {
   _id: Schema.Types.ObjectId;
   firstname: String;
   lastname: String;
-
   email: String;
   password: String;
   phoneNumber: String;
@@ -14,14 +14,14 @@ interface IUser {
   created_at: Date;
 }
 
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
   firstname: {
     type: String,
-    reqired: [true, "Хэрэглчэгчийн нэрийг зааал оруулна."],
+    required: [true, "Хэрэглчэгчийн нэрийг зааал оруулна."],
   },
   lastname: {
     type: String,
-    reqired: [true, "Хэрэглчэгчийн овгийг  зааал оруулна."],
+    required: [true, "Хэрэглчэгчийн овгийг  зааал оруулна."],
   },
   email: {
     type: String,
@@ -33,7 +33,9 @@ const userSchema = new Schema({
     minlength: [8, "Хэрэглэгчийн нууц үг хамгийн багадаа 8 тэмдэгт байна."],
     required: [true, "Хэрэглэгчийн нууц үгийг заавал оруулна."],
   },
-  phoneNumber: String,
+  phoneNumber: {
+    type: String,
+  },
   role: {
     type: String,
     enum: ["admin", "user"],
@@ -43,11 +45,23 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
-  address: String,
+  address: {
+    type: String,
+  },
   created_at: {
     type: Date,
     default: Date.now,
   },
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  } else {
+    const hashedPassword = bcrypt.hashSync(this.password.toString(), 10);
+    this.password = hashedPassword;
+    next();
+  }
 });
 
 const User = model("User", userSchema);

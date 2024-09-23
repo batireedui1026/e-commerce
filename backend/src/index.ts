@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoute from "./routes/auth-route";
 import { connectDB } from "./config/db";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,13 +14,15 @@ const app = express();
 
 // middlewares
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/v1/auth", authRoute);
 
 app.get("/", (req, res) => {
   res.send("welcome to api server");
 });
+console.log("MU", MONGO_URI);
 connectDB(MONGO_URI);
-app.listen(8000, () => {
-  console.log(`Сервер localhost:${8000} дээр аслаа`);
+app.listen(PORT, () => {
+  console.log(`Сервер localhost:${PORT} дээр аслаа`);
 });
