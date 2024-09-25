@@ -9,8 +9,12 @@ const Header = () => {
       <div className="flex justify-between  bg-black px-5 py-3    ">
         <div className="flex gap-4 items-center">
           <img src="pi.png"></img>
-          <p className="text-xl text-white ">ECOMMERCE</p>
-          <p className="text-white">Ангилал </p>
+          <Link href="./home" className="text-xl text-white ">
+            ECOMMERCE
+          </Link>
+          <Link href="./category" className="text-white">
+            Ангилал{" "}
+          </Link>
         </div>
         <div>
           <input

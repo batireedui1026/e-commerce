@@ -1,9 +1,8 @@
 "use client";
 import { useState } from "react";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-// import { useRouter } from "next/router";
 import Link from "next/link";
 
 const SignUp = () => {

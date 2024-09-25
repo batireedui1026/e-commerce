@@ -2,19 +2,96 @@ import { url } from "inspector";
 
 const baraa = [
   {
-    ner: "magazine",
+    ner: "The Prompt Magazine",
     une: 120000,
     img: "/image.png",
   },
   {
-    ner: "chunky",
+    ner: "Chunky Glyph Tee",
+    une: 120000,
+    img: "/image2.png",
+  },
+  {
+    ner: "All Smiles Nalgene",
+    une: 120000,
+    img: "/image3.png",
+  },
+  {
+    ner: "Wildflower Hoodie",
+    une: 108000,
+    img: "/image4.png",
+  },
+  {
+    ner: "Inkblot Tee",
+    une: 120000,
+    img: "/image5.png",
+  },
+  {
+    ner: "Gestures Longsleeve",
+    une: 120000,
+    img: "/image2.png",
+  },
+  {
+    ner: "Chunky Glyph Cap",
+    une: 120000,
+    span: "col-span-2",
+    img: "/image7.png",
+  },
+  {
+    ner: "Local Styles Crewneck",
+    une: 120000,
+    span: "col-span-2",
+    img: "/image8.png",
+  },
+  {
+    ner: "Chunky Glyph Cap",
+    une: 120000,
+    img: "/image7.png",
+  },
+  {
+    ner: "Doodle Hoodie",
+    une: 120000,
+    img: "/image10.png",
+  },
+  {
+    ner: "Chunky Glyph Tee",
+    une: 120000,
+    img: "/image11.png",
+  },
+  {
+    ner: "All Smiles Nalgene",
+    une: 120000,
+    img: "/image12.png",
+  },
+  {
+    ner: "The Prompt Magazine",
     une: 120000,
     img: "/image.png",
   },
   {
-    ner: "magazine",
+    ner: "Independent Corners Tee",
+    une: 120000,
+    img: "/image14.png",
+  },
+  {
+    ner: "Independent Corners Tee",
+    une: 120000,
+    img: "/image14.png",
+  },
+  {
+    ner: "The Prompt Magazine",
     une: 120000,
     img: "/image.png",
+  },
+  {
+    ner: "Chunky Glyph Tee",
+    une: 120000,
+    img: "/image11.png",
+  },
+  {
+    ner: "All Smiles Nalgene",
+    une: 120000,
+    img: "/image12.png",
   },
 ];
 
@@ -27,99 +104,20 @@ const Home = () => {
           <p className="font-semibold">120’000₮</p>
         </div>
       </div>
-      <div className="flex gap-3 my-5 ml-52">
-        <div className="w-60">
-          <img
-            src="/image.png"
-            alt="description of image"
-            className="h-80"
-          ></img>
-          <p>The Prompt Magazine</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image2.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>Chunky Glyph Tee</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image3.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>All Smiles Nalgene</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image4.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>All Smiles Nalgene</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-      </div>
-      <div className=" gap-2 my-5 ml-52 grid grid-cols-3">
-        <div className="w-60">
-          <img
-            src="/image.png"
-            alt="description of image"
-            className="h-80"
-          ></img>
-          <p>The Prompt Magazine</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image2.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>Chunky Glyph Tee</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60 grid-rows-2">
-          <img
-            src="/image3.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>All Smiles Nalgene</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image4.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>All Smiles Nalgene</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image4.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>All Smiles Nalgene</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
-        <div className="w-60">
-          <img
-            src="/image4.png"
-            className="h-80"
-            alt="description of image"
-          ></img>
-          <p>All Smiles Nalgene</p>
-          <p className="font-semibold">120’000₮</p>
-        </div>
+      <div className=" px-20 py-20 grid grid-cols-4 gap-14">
+        {baraa.map((b) => (
+          <div className=" grid {span} ">
+            <div className=" rounded ">
+              <img
+                src={b.img}
+                alt="description of image"
+                className=" rounded-xl object-cover size-full"
+              />
+              <p>{b.ner}</p>
+              <p className="font-bold pb-3">{b.une}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
