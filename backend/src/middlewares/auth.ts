@@ -1,7 +1,17 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
-const auth = (req: Request, res: Response, next) => {
+import { decodeToken } from "../utils/jwt";
+interface IMyRequest {
+  user: string | object;
+}
+declare global {
+  namespace Express {
+    interface Request {
+      user: string | object;
+    }
+  }
+}
+const auth = (req: Request, res: Response, next: NextFunction) => {
   console.log("Нэвтэрсэн хэрэглэгчийг шалгах:", req.headers.authorization);
 
   if (!req.headers.authorization) {
@@ -11,8 +21,9 @@ const auth = (req: Request, res: Response, next) => {
   }
 
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const user = jwt.verify(token, "JWT_TOKEN_@`123");
+    const token = req.headers.authorization?.split(" ")[1];
+    // const user = jwt.verify(token, "JWT_TOKEN_@`123");\
+    const user = decodeToken(token);
     req.user = user;
     next();
   } catch (err) {
@@ -21,3 +32,8 @@ const auth = (req: Request, res: Response, next) => {
 };
 
 export default auth;
+
+// export const currentUser = () => {
+//   const { user } = req;
+//   const findUser = await User.findById(user.id);
+// };

@@ -3,8 +3,8 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
-// import { toast } from "react-toastify";
+// import { toast } from "sonner";
+import { toast } from "react-toastify";
 const Login = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({
@@ -59,7 +59,7 @@ const Login = () => {
         </button>
         <Link
           className="border-b-[1px] w-36 pl-4 pt-9 ml-[45px]  hover:scale-110"
-          href="/forgetpass"
+          href="/forgetpassword"
         >
           Нууц үг мартсан
         </Link>

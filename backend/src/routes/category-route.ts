@@ -1,3 +1,5 @@
 import { Router } from "express";
-// const { getAllCategory, createCategory } from "../controllers/";
+const {getAllCategory} from
 const router = Router();
+
+export default router;

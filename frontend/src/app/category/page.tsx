@@ -95,7 +95,7 @@ const baraa = [
 
 const Category = () => {
   return (
-    <div className="flex gap-20 ">
+    <div className="flex max-w-[1400px] mx-auto ">
       <div className="ml-[15%] mt-20">
         <h1 className="font-bold">Ангилал</h1>
         <div className="flex gap-2 pt-2">

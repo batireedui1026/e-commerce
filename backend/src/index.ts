@@ -24,32 +24,32 @@ app.use("/api/v1/auth", authRoute);
 //   const rndOtp = Math.floor(Math.random() * 10_000)
 //     .toString()
 //     .padStart(4, "0");
-//   const { data, error } = await resend.emails.send({
-//     from: "Acme <onboarding@resend.dev>",
-//     to: ["batireeduiotgonsukh@gmail.com"],
-//     subject: "Cайн байна уу?",
-//     html: GenerateHtml(),
-//   });
-//   if (error) {
-//     console.log("email code sent error", { error });
-//   }
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: false, // true for port 465, false for other ports
-    auth: {
-      user: "batireeduiotgonsukh@gmail.com",
-      pass: "iyvtnswdpidhnynb",
-    },
-  });
-  const info =  transporter.sendMail({
-    from: "batireeduiotgonsukh@gmail.com", // sender address
-    to: "bayrmaa.m49@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "GenerateHtml", // html body
-  });
+// const { data, error } = await resend.emails.send({
+//   from: "Acme <onboarding@resend.dev>",
+//   to: ["batireeduiotgonsukh@gmail.com"],
+//   subject: "Cайн байна уу?",
+//   html: GenerateHtml(),
+// });
+// if (error) {
+//   console.log("email code sent error", { error });
+// }
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: false, // true for port 465, false for other ports
+  auth: {
+    user: "batireeduiotgonsukh@gmail.com",
+    pass: "iyvtnswdpidhnynb",
+  },
+});
+const info = transporter.sendMail({
+  from: "batireeduiotgonsukh@gmail.com", // sender address
+  to: "batireeduiotgonsukh@gmail.com", // list of receivers
+  subject: "Hello ✔", // Subject line
+  text: "Hello world?", // plain text body
+  html: "GenerateHtml", // html body
+});
 
 //   res.send("welcome to api server");
 // });

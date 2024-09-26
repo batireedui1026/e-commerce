@@ -98,13 +98,13 @@ const baraa = [
 const Home = () => {
   return (
     <div>
-      <div className="bg-[url('/zurag.png')] h-[444px] bg-cover bg-center">
+      <div className="bg-[url('/zurag.png')] h-[744px] bg-cover bg-center">
         <div className="pl-20 pt-80">
           <p className="font-semibold">Wildflower Hoodie</p>
           <p className="font-semibold">120’000₮</p>
         </div>
       </div>
-      <div className=" px-20 py-20 grid grid-cols-4 gap-14">
+      <div className="grid grid-cols-4 gap-14 max-w-[1400px] mx-auto mt-12 mb-24  ">
         {baraa.map((b) => (
           <div className={`grid ${b.span ? b.span : ""}`}>
             <div className=" rounded ">
