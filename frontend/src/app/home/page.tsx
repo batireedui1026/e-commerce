@@ -106,15 +106,15 @@ const Home = () => {
       </div>
       <div className=" px-20 py-20 grid grid-cols-4 gap-14">
         {baraa.map((b) => (
-          <div className=" grid {span} ">
+          <div className={`grid ${b.span ? b.span : ""}`}>
             <div className=" rounded ">
               <img
                 src={b.img}
                 alt="description of image"
-                className=" rounded-xl object-cover size-full"
+                className=" rounded-xl object-cover size-full overflow-hidden"
               />
               <p>{b.ner}</p>
-              <p className="font-bold pb-3">{b.une}</p>
+              <p className="font-bold pb-3">{b.une}₮</p>
             </div>
           </div>
         ))}

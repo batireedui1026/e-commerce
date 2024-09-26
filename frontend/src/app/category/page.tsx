@@ -95,8 +95,8 @@ const baraa = [
 
 const Category = () => {
   return (
-    <div className="flex gap-52">
-      <div className="ml-[20%] mt-20">
+    <div className="flex gap-20 ">
+      <div className="ml-[15%] mt-20">
         <h1 className="font-bold">Ангилал</h1>
         <div className="flex gap-2 pt-2">
           <input
