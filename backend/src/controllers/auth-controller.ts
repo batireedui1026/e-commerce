@@ -60,7 +60,6 @@
 //   res.status(200).json({user: findUser, message: "Success"});
 // };
 
-
 // export const forgetPassword = async (req: Request, res: Response) => {
 //   try {
 //     const { email } = req.body;
@@ -104,7 +103,6 @@
 //   res.status(200).json({ message: "Нууц үг сэргээх имэйл илгээлээ" });
 // };
 
-
 // export const verifyPassword = async (req: Request, res: Response) => {
 //   const { password, resetToken } = req.body;
 
@@ -129,14 +127,6 @@
 //   res.status(200).json({ message: "Нууц үг  амжилттэй сэргээлээ" });
 // };
 
-
-
-
-
-
-
-
-
 import { Request, Response } from "express";
 import User from "../models/user.model";
 import bcrypt from "bcrypt";
@@ -154,9 +144,13 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User does not exist" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "default_secret", {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET || "default_secret",
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.status(200).json({ message: "Success", token });
   } catch (error) {
@@ -164,7 +158,6 @@ export const login = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -189,13 +182,11 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-
 export const currentUser = async (req: Request, res: Response) => {
   const { id } = req.user;
   const user = await User.findById(id);
   res.status(200).json({ user, message: "Success" });
 };
-
 
 export const forgetPassword = async (req: Request, res: Response) => {
   try {
@@ -206,7 +197,9 @@ export const forgetPassword = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User not found." });
     }
 
-    const otp = Math.floor(Math.random() * 10_000).toString().padStart(4, "0");
+    const otp = Math.floor(Math.random() * 10_000)
+      .toString()
+      .padStart(4, "0");
     user.otp = otp;
     await user.save();
     await sendEmail(email, otp);
@@ -218,26 +211,29 @@ export const forgetPassword = async (req: Request, res: Response) => {
   }
 };
 
-
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { email, otpValue } = req.body;
+    console.log("email, otp value", email);
+    console.log("email, otp value", otpValue);
     const user = await User.findOne({ email, otp: otpValue });
 
     if (!user) {
       return res.status(400).json({ message: "Invalid user or OTP." });
     }
 
-    
     const resetToken = crypto.randomBytes(25).toString("hex");
-    const hashedResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const hashedResetToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
     user.passwordResetToken = hashedResetToken;
     user.passwordResetTokenExpire = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
     await sendEmail(
       email,
-      `<a href="http://localhost:3000/forgetpass/newpass?resettoken=${resetToken}">Reset your password</a>`
+      `<a href="http://localhost:3002/newpass?resettoken=${resetToken}">Reset your password</a>`
     );
     res.status(200).json({ message: "Password reset email sent." });
   } catch (error) {
@@ -246,11 +242,13 @@ export const verifyOtp = async (req: Request, res: Response) => {
   }
 };
 
-
 export const verifyPassword = async (req: Request, res: Response) => {
   try {
     const { password, resetToken } = req.body;
-    const hashedResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const hashedResetToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
 
     const user = await User.findOne({
       passwordResetToken: hashedResetToken,
@@ -258,7 +256,9 @@ export const verifyPassword = async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      return res.status(400).json({ message: "Reset token is invalid or expired." });
+      return res
+        .status(400)
+        .json({ message: "Reset token is invalid or expired." });
     }
 
     user.password = bcrypt.hashSync(password, 10);
@@ -267,6 +267,16 @@ export const verifyPassword = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Password has been reset successfully." });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+export const updatePassword = async (req: Request, res: Response) => {
+  try {
+    const { password } = req.body;
+    const user = await User.updateOne({ password });
+    res.status(200).json({ message: "Success" });
+  } catch (error) {
     res.status(500).json({ message: "Internal server error." });
   }
 };

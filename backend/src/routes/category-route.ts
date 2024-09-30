@@ -1,5 +1,12 @@
 import { Router } from "express";
-const {getAllCategory} from
+import {
+  createCategory,
+  getAllCategory,
+} from "../controllers/category-controller";
+
 const router = Router();
+
+router.route("/").get(getAllCategory);
+router.route("/").post(createCategory);
 
 export default router;

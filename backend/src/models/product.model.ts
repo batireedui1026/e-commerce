@@ -28,7 +28,7 @@ const productSchema = new Schema<IProduct>(
     },
     size: {
       type: String,
-      emum: ["S", "L", "M", "XL", XXL],
+      emum: ["S", "L", "M", "XL", "XXL"],
       default: "S",
     },
     images: {

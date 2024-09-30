@@ -1,4 +1,4 @@
-const GenerateHtml = () => {
+const GenerateHtml = (otp: string) => {
   return `<div style="overflow: auto;">
       <div style="margin: 50px auto; width: 70%; padding: 20px 0;">
         <hr style="border: none; border-top: 1px solid #eee;" />
@@ -20,7 +20,7 @@ const GenerateHtml = () => {
             border-radius: 4px;
           "
         >
-          8989
+        ${otp}
         </h2>
         <p style="margin: 0 auto; width: max-content; padding: 0 10px;">
           энэхүү код нь 5 мин хүчинтэй болно.

@@ -22,3 +22,4 @@ const categorySchema = new Schema<ICategory>(
 );
 
 const Category = model<ICategory>("category", categorySchema);
+export default Category;

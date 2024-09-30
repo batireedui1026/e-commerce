@@ -5,7 +5,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
+import { Button } from "@/components/ui/button";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+// import { EmailIcon } from "@/icons";
 const ForgetPassword = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -19,6 +25,8 @@ const ForgetPassword = () => {
 
   const handleSendOtp = async () => {
     console.log(email);
+    // console.log("forgetpass", handleSendOtp);
+
     try {
       const res = await axios.post(
         `http://localhost:8000/api/v1/auth/forget-password`,
@@ -29,6 +37,7 @@ const ForgetPassword = () => {
       }
     } catch (error) {
       toast.error("Имэйл илгээхэд алдаа гарлаа");
+      console.log(error);
     }
   };
 
@@ -39,20 +48,21 @@ const ForgetPassword = () => {
       try {
         const res = await axios.post(
           "http://localhost:8000/api/v1/auth/verify-otp",
-          { email, otpValue }
+          { email, otpValue: value }
         );
         if (res.status === 200) {
           toast.success(
             "Нууц үг сэргээх холбоосыг таны имэйл хаяг руу явууллаа."
           );
-          router.push("/login");
+          router.push("/newpass");
         }
       } catch (error) {
         toast.error("Имэйл илгээхэд алдаа гарлаа");
+        console.log(error);
       }
     }
   };
- 
+
   const handleResendOtp = () => {
     setCountDown(30);
   };
@@ -65,8 +75,6 @@ const ForgetPassword = () => {
       return () => clearInterval(countdown);
     }
   }, [countDown]);
-
-  
 
   return (
     <div className="pt-52 pb-80 bg-gray-100">
@@ -82,15 +90,46 @@ const ForgetPassword = () => {
               onChange={handleEmail}
             ></input>
             <button
-            
-              className="btn border rounded-xl w-60 flex bg-blue-700 h-9 pl-20 text-white transform transition-transform duration-300 hover:scale-110 " onClick={handleSendOtp}
+              className="btn border rounded-xl w-60 flex bg-blue-700 h-9 pl-20 text-white transform transition-transform duration-300 hover:scale-110 "
+              onClick={handleSendOtp}
             >
               Илгээх
             </button>
           </div>
         </>
       )}
-      {step === 2 && <Otp />}
+      {step === 2 && (
+        <div className="h-[calc(100vh-350px)] flex flex-col items-center mt-24">
+          <h1 className="mt-7 text-2xl font-bold">Баталгаажуулах</h1>
+          <p className="mt-2 mb-6 text-text-primary">
+            {`“${email}” хаягт илгээсэн баталгаажуулах кодыг оруулна уу`}
+          </p>
+          <div className="flex flex-col gap-4 text-sm">
+            <InputOTP
+              maxLength={4}
+              value={otpValue}
+              onChange={handleConfirmOtp}
+            >
+              <InputOTPGroup className="bg-white">
+                <InputOTPSlot className="w-14 h-14" index={0} />
+                <InputOTPSlot className="w-14 h-14" index={1} />
+                <InputOTPSlot className="w-14 h-14" index={2} />
+                <InputOTPSlot className="w-14 h-14" index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+            <Link href="/newpass" className="btn border w-60 bg-blue-400">
+              Enter
+            </Link>
+            <Button
+              className="cursor-pointer text-muted-foreground mt-12 underline text-sm font-medium"
+              onClick={handleResendOtp}
+              variant="link"
+            >
+              Дахин илгээх ({countDown})
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
