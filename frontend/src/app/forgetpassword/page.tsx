@@ -25,11 +25,34 @@ const ForgetPassword = () => {
         { email }
       );
       if (res.status === 200) {
+        setStep(step + 1);
       }
     } catch (error) {
       toast.error("Имэйл илгээхэд алдаа гарлаа");
     }
   };
+
+  const handleConfirmOtp = async (value: string) => {
+    setOtpValue(value);
+    if (value.length === 4) {
+      // router.push("/forgetpass/newpass");
+      try {
+        const res = await axios.post(
+          "http://localhost:8000/api/v1/auth/verify-otp",
+          { email, otpValue }
+        );
+        if (res.status === 200) {
+          toast.success(
+            "Нууц үг сэргээх холбоосыг таны имэйл хаяг руу явууллаа."
+          );
+          router.push("/login");
+        }
+      } catch (error) {
+        toast.error("Имэйл илгээхэд алдаа гарлаа");
+      }
+    }
+  };
+ 
   const handleResendOtp = () => {
     setCountDown(30);
   };
@@ -42,6 +65,8 @@ const ForgetPassword = () => {
       return () => clearInterval(countdown);
     }
   }, [countDown]);
+
+  
 
   return (
     <div className="pt-52 pb-80 bg-gray-100">
@@ -56,12 +81,12 @@ const ForgetPassword = () => {
               type="text"
               onChange={handleEmail}
             ></input>
-            <Link
-              href="/opt"
-              className="btn border rounded-xl w-60 flex bg-blue-700 h-9 pl-20 text-white transform transition-transform duration-300 hover:scale-110 "
+            <button
+            
+              className="btn border rounded-xl w-60 flex bg-blue-700 h-9 pl-20 text-white transform transition-transform duration-300 hover:scale-110 " onClick={handleSendOtp}
             >
               Илгээх
-            </Link>
+            </button>
           </div>
         </>
       )}

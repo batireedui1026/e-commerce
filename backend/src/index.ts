@@ -17,22 +17,9 @@ const app = express();
 // middlewares
 app.use(express.json());
 app.use(cors());
-
 app.use("/api/v1/auth", authRoute);
 
-// app.get("/", async (req, res) => {
-//   const rndOtp = Math.floor(Math.random() * 10_000)
-//     .toString()
-//     .padStart(4, "0");
-// const { data, error } = await resend.emails.send({
-//   from: "Acme <onboarding@resend.dev>",
-//   to: ["batireeduiotgonsukh@gmail.com"],
-//   subject: "Cайн байна уу?",
-//   html: GenerateHtml(),
-// });
-// if (error) {
-//   console.log("email code sent error", { error });
-// }
+
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   host: "smtp.gmail.com",
@@ -44,15 +31,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 const info = transporter.sendMail({
-  from: "batireeduiotgonsukh@gmail.com", // sender address
-  to: "batireeduiotgonsukh@gmail.com", // list of receivers
-  subject: "Hello ✔", // Subject line
-  text: "Hello world?", // plain text body
-  html: "GenerateHtml", // html body
+  from: "batireeduiotgonsukh@gmail.com", 
+  to: "batireeduiotgonsukh@gmail.com", 
+  subject: "Hello ✔", 
+  text: "Hello world?", 
+  html: "GenerateHtml", 
 });
 
-//   res.send("welcome to api server");
-// });
+
 
 console.log("MU", MONGO_URI);
 connectDB(MONGO_URI);
