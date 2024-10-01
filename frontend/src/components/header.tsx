@@ -4,8 +4,12 @@ import { FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { useState } from "react";
+import { useUser } from "../../provider/user-provider";
+import { Button } from "./ui/button";
 const Header = () => {
   const [baraa, setBaraa] = useState();
+  const {user} = useUser();
+  console.log("user", user);
   return (
     <div>
       <div className="flex justify-between  bg-black px-5 py-3    ">
@@ -30,6 +34,23 @@ const Header = () => {
         <div className="flex gap-4 items-center">
           <FaHeart className="text-white" />
           <FaShoppingCart className="text-white" />
+
+          {user && <img src={""} alt="'profile" />}
+          {!user && (
+          <>
+            <Link href="/signup">
+              <Button
+                variant="outline"
+                className="rounded-3xl border-blue-primary text-white-primary"
+              >
+                Бүртгүүлэх
+              </Button>
+            </Link>
+            <Link href="/login">
+              <Button className="button-primary">Нэвтрэх</Button>
+            </Link>
+          </>
+        )}
 
           <Link
             className="btn border rounded-xl text-white w-24 pl-1 transform transition-transform duration-300 hover:scale-110"
