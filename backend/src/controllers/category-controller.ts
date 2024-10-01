@@ -13,3 +13,8 @@ export const createCategory = (req: Request, res: Response) => {
     message: "New category is created successfully",
   });
 };
+
+
+
+
+
