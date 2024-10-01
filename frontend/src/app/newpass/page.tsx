@@ -56,8 +56,8 @@ const NewPass = () => {
         });
         return;
       }
-      const response = await axios.put(
-        `http://localhost:8000/api/v1/auth/update-pass`,
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/auth/verify-password`,
         {
           password,
         }
