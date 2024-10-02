@@ -6,10 +6,28 @@ import Link from "next/link";
 import { useState } from "react";
 import { useUser } from "../../provider/user-provider";
 import { Button } from "./ui/button";
+import { Images } from "lucide-react";
+import axios from "axios";
 const Header = () => {
-  const [baraa, setBaraa] = useState();
-  const {user} = useUser();
+  const [product, setProduct] = useState({ name: "", price: "", images: "" });
+  const { user } = useUser();
   console.log("user", user);
+  const searchProduct = async () => {
+    const { name, price, images } = product;
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/products/search-product`,
+        {
+          name,
+          price,
+          images,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between  bg-black px-5 py-3    ">
@@ -26,7 +44,7 @@ const Header = () => {
           <input
             className="border rounded-xl bg-gray-900 w-80 text-center h-10 text-white"
             placeholder="Бүтээгдэхүүн хайх"
-            onChange={(e) => e.target.value}
+            // onChange={setProduct({ ...product, name: e.target.value }};
           ></input>
           <CiSearch className="text-white relative bottom-8 left-3 text-xl " />
         </div>
@@ -37,20 +55,20 @@ const Header = () => {
 
           {user && <img src={""} alt="'profile" />}
           {!user && (
-          <>
-            <Link href="/signup">
-              <Button
-                variant="outline"
-                className="rounded-3xl border-blue-primary text-white-primary"
-              >
-                Бүртгүүлэх
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button className="button-primary">Нэвтрэх</Button>
-            </Link>
-          </>
-        )}
+            <>
+              <Link href="/signup">
+                <Button
+                  variant="outline"
+                  className="rounded-3xl border-blue-primary text-white-primary"
+                >
+                  Бүртгүүлэх
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button className="button-primary">Нэвтрэх</Button>
+              </Link>
+            </>
+          )}
 
           <Link
             className="btn border rounded-xl text-white w-24 pl-1 transform transition-transform duration-300 hover:scale-110"

@@ -37,15 +37,17 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { toast } from "react-toastify";
 import axios from "axios";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const NewPass = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const { toast } = useToast();
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
   const params = useSearchParams();
 
+  const reset = params.get("resettoken");
+  console.log("reset", reset);
   const handleNewPassword = async () => {
     try {
       if (!(password === repassword)) {
@@ -60,6 +62,7 @@ const NewPass = () => {
         `http://localhost:8000/api/v1/auth/verify-password`,
         {
           password,
+          resetToken: reset,
         }
       );
       if (response.status === 200) {
@@ -68,7 +71,10 @@ const NewPass = () => {
           title: "Амжилттай",
           description: "Нууц үг амжилттай солигдлоо",
         });
+        router.push("/login");
       }
+      // console.log("RT", params.get("resettoken"));
+      // console.log("EMAIL", params.get("email"));
     } catch (error) {
       console.log(error);
     }
