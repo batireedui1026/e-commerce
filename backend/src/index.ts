@@ -6,6 +6,7 @@ import { connectDB } from "./config/db";
 import cors from "cors";
 import categoryRoute from "./routes/category-route";
 import productRoute from "./routes/product-route";
+
 // import { Resend } from "resend";
 import GenerateHtml from "./utils/generateHtmlTemplate";
 import nodemailer from "nodemailer";
@@ -22,6 +23,7 @@ app.use(cors());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/products", productRoute);
+
 // const transporter = nodemailer.createTransport({
 //   service: "Gmail",
 //   host: "smtp.gmail.com",

@@ -12,11 +12,11 @@ const Footer = () => {
         <img src="/pi.png"></img>
         <div className="flex items-center">
           <div className="flex gap-2 pr-24 text-white ">
-            <IoIosCall />
+            <IoIosCall className="pt-1" />
             <p>(976) 7007-1234</p>
           </div>
           <div className="flex items-center gap-2 text-white">
-            <FaRegMessage />
+            <FaRegMessage className="pt-1" />
             <p>contact@ecommerce.mn</p>
           </div>
         </div>

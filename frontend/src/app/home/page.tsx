@@ -1,4 +1,7 @@
+"use client"
+import axios from "axios";
 import { url } from "inspector";
+import { useState } from "react";
 
 const baraa = [
   {
@@ -96,6 +99,15 @@ const baraa = [
 ];
 
 const Home = () => {
+  const goDetail  = async() => {
+    const [ id, setId] = useState("");
+    try {
+     const response = await axios.get(`http://localhost:8000/api/v1/products/:productId`,{id})
+    } catch (error) {
+        console.log(error)
+        
+    }
+  }
   return (
     <div>
       <div className="bg-[url('/zurag.png')] h-[744px] bg-cover bg-center">
