@@ -8,13 +8,15 @@ export const getAllCategory = (req: Request, res: Response) => {
   });
 };
 
-export const createCategory = (req: Request, res: Response) => {
-  res.status(200).json({
-    message: "New category is created successfully",
-  });
+export const createCategory = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    const category = await Category.create({ name });
+    res.status(200).json({
+      message: "New category is created successfully",
+      category,
+    });
+  } catch (error) {
+    console.log("error", error);
+  }
 };
-
-
-
-
-

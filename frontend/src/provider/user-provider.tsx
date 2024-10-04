@@ -44,7 +44,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user) {
     }
     fetchUserData();
-  }, [user?.id]);
+  }, [user?._id]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

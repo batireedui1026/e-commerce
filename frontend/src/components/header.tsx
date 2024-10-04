@@ -4,7 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { useState } from "react";
-import { useUser } from "../../provider/user-provider";
+import { useUser } from "../provider/user-provider";
 import { Button } from "./ui/button";
 import { Images } from "lucide-react";
 import axios from "axios";
