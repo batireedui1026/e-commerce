@@ -1,7 +1,9 @@
 "use client";
 import axios from "axios";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
+
 const baraa = [
   {
     ner: "The Prompt Magazine",
@@ -50,46 +52,42 @@ const baraa = [
   },
 ];
 const Detail = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
+  // const { isNew } = response.data.product;
 
   const getProduct = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/products/{productId}`);
-      return response.data.products.productId; 
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/products/${id}`
+      );
+      // console.log("data", response.data);
+      return setProduct(response.data.product);
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
     // const products = await getProduct();
-    useEffect(() => {
-      getProduct();
-    }, []);
   };
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  console.log("product", product);
+  console.log("image", product.images);
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex justify-between ml-20 mr-60">
         <div className="flex gap-32">
           <div className=" my-40 flex flex-col gap-4 ">
-            <img
-              className="w-16 h-24 rounded object-cover"
-              src="https://s3-alpha-sig.figma.com/img/3708/a364/2cc93e10c62fdcfbc65fcc2ebd1c8aac?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ooUEUqmuYW6QEEGLhZ-TQyqmEogKccyKw8MIecGT8yJx3UsayNCWUp-P3BF4-HStP5RLvnzysustbH5QyYvWxnE9FrbYlQG2U6sPZu2cJ6FPMiqf~Mk8wwmfGMNG8KKDvjnx70a6ohGPmSdOSQo-S6Dv6zLQzQP5v7szHLqtNFMzgWkjzdCqy0X4lwBSwT~x-ImLBDS-yBzbxpu4vvCcIufvrT1e~CofC6OgRudYUW1C7kd0Rz737kyDU-sOHf5GSLyOpIZNRDwUhKBGYs6RxhcXFjNRNHBhkOwTKJn2XQkX6Qn3aI8eZarjweZmh7l3yL7hoVq5zsfD6Q3OUPR2LQ__"
-            ></img>
-            <img
-              className="w-16 h-24 rounded object-cover"
-              src="https://s3-alpha-sig.figma.com/img/0e8a/5582/df71cfe2afb770daa5d2b0aafeae7b5a?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=b3tHedAhZ3xhMYJ21xc9t0m6Y8SbCV11gvgEh~MeCgajBa7AgmGZOoE6gTbLYOa-o8E6GISRveLzw~7LepW-qZp5vWYoaBLJ5tLTZRDuG4bljI1ly429nWc71bhkd47xGVsrGWh6UuA~x-Oy6kvPHy~bKOEjnjLTT2wsXn6NCZzp7A6Ky8knZOhbzqrSsbeYzwzVCJTPuhcqz3tfy5TQfD5ZxFtIyGn8Eu3KYrh25yviTurmlpa6H~z~MEjOSMKEfyvN-JuuoMfg7lAhtcipMUGK9O~v2NpuENGf-8sGXL7r0lhpKYNnp3ANc-gNgFugKkML-OM8xDOkeAXroA2kbg__"
-            ></img>
-            <img
-              className="w-16 h-24 rounded object-cover"
-              src="https://s3-alpha-sig.figma.com/img/de34/2db3/cbe229408180afd06a6cf0d8b43243c6?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=nFihg0FGahz6SxJuQb-wMR4wxr0rE0XAwqrl31g0~cVbviHd~-H4YtslrsXNSI44teT1Wv-zyt-IC~Y~UZM4hcg4SEd0FWLdHzOG0Sar6ExR4pEHVMDnxfclfjft8tIA62A8k9VTX7Oxpbbz1AY9hQbcINbhUNX03upIZDa3ivITW7WNfEZMfDH-8ko9zgak~SI1YG718DGWpNqttS0adRZxaHqfYKOll7P7rQUwWrXECUIujmAYOoOuLwy5~ngEMHVa3tqz5HRYcIAI8tBN4GjWRaWhOt4QEUiBJBRug39N6d1ssTUuGDxDbt-XvBYD5BLNHXMQ-hDcy~n09BsEbw__"
-            ></img>
-            <img
-              className="w-16 h-24 rounded object-cover"
-              src="https://s3-alpha-sig.figma.com/img/5aed/431f/148c4c10509c1d0aa716cc8e9d80a0f1?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=VK3pPuK7JizUV~Y19UYNQDfZnXtUgotQvv-zJ4Uhp6ZVF5noFz4vCbgSvhJX3YLKftrY2xeO9pASp9Z43yEyS1jnbBtBkl8qtphyelPSNThzk7wCliCM6NQ12vmX1vduL3idKTo5nZwot7MbRev7yizoj8yvYCyJVfCMwyTN2cTvGl1UftzNaK~PYMr57VlcF8PlHFqji7WUbyRTGT5N5te0OmSm5crf7ZYUay~vVVEox5ssQHZrR4Qzegy9E2nxWFxQylUbZv~wYsynoKeJstPChgj-pVvDZiYfVqqalPrw4gQRvtmADss47D~YO2ckSSw1-70UaTghRX1LiLfSZA__"
-            ></img>
+            {product.images?.map((image) => (
+              <img className="w-16 h-24 rounded object-cover" src={image}></img>
+            ))}
           </div>
           <div className="my-32">
-             <img
-             className="w-[426px] h-[641px] rounded-2xl object-cover"
-             src={productId.images}
-             ></img>
+            <img
+              className="w-[426px] h-[641px] rounded-2xl object-cover"
+              src={product.images}
+            ></img>
           </div>
         </div>
         <div className="my-40 flex flex-col gap-3">
@@ -97,9 +95,9 @@ const Detail = () => {
             шинэ
           </p>
           <p className="flex text-2xl font-bold items-center gap-3">
-            Wildpower Hoodie <CiHeart />
+            {product.name} <CiHeart />
           </p>
-          <p>Зэрлэг цэцгийн зурагтай даавуун цамц</p>
+          {/* <p>Зэрлэг цэцгийн зурагтай даавуун цамц</p> */}
           <p className="border-bottom-1px w-40 border-b-2 text-black">
             Хэмжээний заавар
           </p>
@@ -129,7 +127,7 @@ const Detail = () => {
               +
             </div>
           </div>
-          <p className="font-bold text-2xl">120000₮</p>
+          <p className="font-bold text-2xl">{product.price}₮</p>
           <button className="btn btn-primary w-36 h-8 bg-blue-600 rounded-xl text-white">
             {" "}
             Cагсанд нэмэх

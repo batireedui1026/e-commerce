@@ -3,30 +3,31 @@ import { FaHeart } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../provider/user-provider";
 import { Button } from "./ui/button";
 import { Images } from "lucide-react";
 import axios from "axios";
 const Header = () => {
-  const [product, setProduct] = useState({ name: "", price: "", images: "" });
+  // const [product, setProduct] = useState({ name: "", price: "", images: "" });
   const { user } = useUser();
-  console.log("user", user);
-  const searchProduct = async () => {
-    const { name, price, images } = product;
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/products/search-product`,
-        {
-          name,
-          price,
-          images,
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // console.log("user", user);
+  // const searchProducts = async () => {
+  //   const { name, price, images } = products;
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:8000/api/v1/products`,
+  //       {
+  //         name,
+  //         price,
+  //         images,
+  //       }
+  //     );
+  //     return setProduct(response.data.products);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div>
@@ -44,7 +45,6 @@ const Header = () => {
           <input
             className="border rounded-xl bg-gray-900 w-80 text-center h-10 text-white"
             placeholder="Бүтээгдэхүүн хайх"
-            // onChange={setProduct({ ...product, name: e.target.value }};
           ></input>
           <CiSearch className="text-white relative bottom-8 left-3 text-xl " />
         </div>
