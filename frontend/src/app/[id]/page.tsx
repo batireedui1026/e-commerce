@@ -1,56 +1,68 @@
 "use client";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
+const baraa = [
+  {
+    ner: "The Prompt Magazine",
+    une: 120000,
+    img: "/image.png",
+  },
+  {
+    ner: "Chunky Glyph Tee",
+    une: 120000,
+    img: "/image2.png",
+  },
+  {
+    ner: "All Smiles Nalgene",
+    une: 120000,
+    img: "/image3.png",
+  },
+  // {
+  //   ner: "Wildflower Hoodie",
+  //   une: 108000,
+  //   img: "/image4.png",
+  // },
+  {
+    ner: "Inkblot Tee",
+    une: 120000,
+    img: "/image5.png",
+  },
+  {
+    ner: "Gestures Longsleeve",
+    une: 120000,
+    img: "/image2.png",
+  },
+  {
+    ner: "Chunky Glyph Cap",
+    une: 120000,
+    img: "/image7.png",
+  },
+  {
+    ner: "Local Styles Crewneck",
+    une: 120000,
+    img: "/image8.png",
+  },
+  {
+    ner: "Chunky Glyph Cap",
+    une: 120000,
+    img: "/image7.png",
+  },
+];
 const Detail = () => {
-  const baraa = [
-    {
-      ner: "The Prompt Magazine",
-      une: 120000,
-      img: "/image.png",
-    },
-    {
-      ner: "Chunky Glyph Tee",
-      une: 120000,
-      img: "/image2.png",
-    },
-    {
-      ner: "All Smiles Nalgene",
-      une: 120000,
-      img: "/image3.png",
-    },
-    // {
-    //   ner: "Wildflower Hoodie",
-    //   une: 108000,
-    //   img: "/image4.png",
-    // },
-    {
-      ner: "Inkblot Tee",
-      une: 120000,
-      img: "/image5.png",
-    },
-    {
-      ner: "Gestures Longsleeve",
-      une: 120000,
-      img: "/image2.png",
-    },
-    {
-      ner: "Chunky Glyph Cap",
-      une: 120000,
-      img: "/image7.png",
-    },
-    {
-      ner: "Local Styles Crewneck",
-      une: 120000,
-      img: "/image8.png",
-    },
-    {
-      ner: "Chunky Glyph Cap",
-      une: 120000,
-      img: "/image7.png",
-    },
-  ];
 
+  const getProduct = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/v1/products/{productId}`);
+      return response.data.products.productId; 
+    } catch (error) {
+      console.log(error); 
+    }
+    // const products = await getProduct();
+    useEffect(() => {
+      getProduct();
+    }, []);
+  };
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex justify-between ml-20 mr-60">
@@ -74,10 +86,10 @@ const Detail = () => {
             ></img>
           </div>
           <div className="my-32">
-            <img
-              className="w-[426px] h-[641px] rounded-2xl object-cover"
-              src="https://s3-alpha-sig.figma.com/img/3708/a364/2cc93e10c62fdcfbc65fcc2ebd1c8aac?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ooUEUqmuYW6QEEGLhZ-TQyqmEogKccyKw8MIecGT8yJx3UsayNCWUp-P3BF4-HStP5RLvnzysustbH5QyYvWxnE9FrbYlQG2U6sPZu2cJ6FPMiqf~Mk8wwmfGMNG8KKDvjnx70a6ohGPmSdOSQo-S6Dv6zLQzQP5v7szHLqtNFMzgWkjzdCqy0X4lwBSwT~x-ImLBDS-yBzbxpu4vvCcIufvrT1e~CofC6OgRudYUW1C7kd0Rz737kyDU-sOHf5GSLyOpIZNRDwUhKBGYs6RxhcXFjNRNHBhkOwTKJn2XQkX6Qn3aI8eZarjweZmh7l3yL7hoVq5zsfD6Q3OUPR2LQ__"
-            ></img>
+             <img
+             className="w-[426px] h-[641px] rounded-2xl object-cover"
+             src={productId.images}
+             ></img>
           </div>
         </div>
         <div className="my-40 flex flex-col gap-3">
