@@ -54,6 +54,7 @@ const baraa = [
 const Detail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
+  const [check, setCheck] = useState({isNew: "",});
   // const { isNew } = response.data.product;
 
   const getProduct = async () => {
@@ -74,6 +75,26 @@ const Detail = () => {
 
   console.log("product", product);
   console.log("image", product.images);
+   
+ 
+  const check = async() => {
+    const {isNew} = check;
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/products/isnew`,
+        {
+          isNew,
+        }
+      );
+      console.log("response", response);
+    } catch (error) {
+      console.log(error);
+      
+    }
+
+  }
+
+
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex justify-between ml-20 mr-60">

@@ -42,3 +42,31 @@ export const getProduct = async (req: Request, res: Response) => {
     res.status(400).json({ message: "failed to get one product" });
   }
 };
+
+
+export const isNew = async (req: Request, res: Response) => {
+  try {
+    const { isNew } = req.body;
+
+    // Check if isNew was provided in the request body
+    if (!isNew) {
+      return res.status(400).json({ message: "Fields cannot be empty." });
+    }
+
+    // Find a product with the isNew field
+    const product = await Product.findOne({ isNew });
+
+    // If no product is found, return an error message
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    // If a product is found, send a success response
+    res.status(200).json({ message: "Success", product });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve the product." });
+  }
+};
+
