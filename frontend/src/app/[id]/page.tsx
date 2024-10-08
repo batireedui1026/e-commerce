@@ -53,8 +53,7 @@ const baraa = [
 ];
 const Detail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState({});
-  const [check, setCheck] = useState({isNew: "",});
+  const [product, setProduct] = useState<any>({});
   // const { isNew } = response.data.product;
 
   const getProduct = async () => {
@@ -62,7 +61,7 @@ const Detail = () => {
       const response = await axios.get(
         `http://localhost:8000/api/v1/products/${id}`
       );
-      // console.log("data", response.data);
+      console.log("data", response.data.product);
       return setProduct(response.data.product);
     } catch (error) {
       console.log(error);
@@ -73,27 +72,21 @@ const Detail = () => {
     getProduct();
   }, []);
 
-  console.log("product", product);
-  console.log("image", product.images);
-   
- 
-  const check = async() => {
-    const {isNew} = check;
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/products/isnew`,
-        {
-          isNew,
-        }
-      );
-      console.log("response", response);
-    } catch (error) {
-      console.log(error);
-      
-    }
+  // const fetchNew = async () => {
+  //   const { isNew } = check;
 
-  }
-
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:8000/api/v1/products/isnew`,
+  //       {
+  //         isNew,
+  //       }
+  //     );
+  //     console.log("response", response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="max-w-[1400px] mx-auto">
@@ -112,11 +105,16 @@ const Detail = () => {
           </div>
         </div>
         <div className="my-40 flex flex-col gap-3">
-          <p className="w-20 h-7 border border-blue-700 font-semibold rounded pl-4 ">
-            шинэ
-          </p>
+          {product.isNew ? (
+            <p className="w-20 h-7 border border-blue-700 font-semibold rounded pl-4 ">
+              шинэ
+            </p>
+          ) : (
+            ""
+          )}
+
           <p className="flex text-2xl font-bold items-center gap-3">
-            {product.name} <CiHeart />
+            {product?.name} <CiHeart />
           </p>
           {/* <p>Зэрлэг цэцгийн зурагтай даавуун цамц</p> */}
           <p className="border-bottom-1px w-40 border-b-2 text-black">
