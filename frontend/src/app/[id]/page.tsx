@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
@@ -72,21 +73,15 @@ const Detail = () => {
     getProduct();
   }, []);
 
-  // const fetchNew = async () => {
-  //   const { isNew } = check;
-
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:8000/api/v1/products/isnew`,
-  //       {
-  //         isNew,
-  //       }
-  //     );
-  //     console.log("response", response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const purchase = async () => {
+    const [cart, setCart] = useState({});
+    try {
+      const response = await axios.post(`http://localhost:8000/api/v1/carts`);
+      return setCart(response.data.carts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="max-w-[1400px] mx-auto">
@@ -147,10 +142,13 @@ const Detail = () => {
             </div>
           </div>
           <p className="font-bold text-2xl">{product.price}₮</p>
-          <button className="btn btn-primary w-36 h-8 bg-blue-600 rounded-xl text-white">
+          <Link
+            href="/sags"
+            className="btn btn-primary w-36 h-8 bg-blue-600 rounded-xl text-white"
+          >
             {" "}
             Cагсанд нэмэх
-          </button>
+          </Link>
           <div className="flex gap-3">
             <p>Үнэлгээ</p>
             <p className="w-28 border-b-2">Бүгдийг харах</p>
