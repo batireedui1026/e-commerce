@@ -4,7 +4,7 @@ import { url } from "inspector";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
+import { CiHeart } from "react-icons/ci";
 // const baraa = [
 //   {
 //     ner: "The Prompt Magazine",
@@ -123,21 +123,26 @@ const Home = async () => {
           <p className="font-semibold">120’000₮</p>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-14 max-w-[1400px] mx-auto mt-12 mb-24  ">
-        {products.map((product) => (
-          <Link href={`/${product._id}`}>
-            <div className="rounded">
-              <img
-                src={product.images}
-                alt="description of image"
-                className=" rounded-xl object-cover size-full overflow-hidden"
-              />
-              <p>{product.name}</p>
-              <p className="font-bold pb-3">{product.price}₮</p>
-            </div>
+      <div className="grid grid-cols-4 gap-14 max-w-[1400px] mx-auto mt-12 mb-24">
+  {products.map((product) => (
+    <Link href={`/${product._id}`} key={product._id}>
+      <div className="rounded">
+        <div
+          className="relative rounded-xl bg-cover bg-center h-64 overflow-hidden"
+          style={{ backgroundImage: `url(${product.images})` }}
+        >
+          <Link href={`/${product._idx}`}>
+            <CiHeart className="text-3xl absolute top-3 right-3 text-red-500 cursor-pointer" />
           </Link>
-        ))}
+        </div>
+        <p>{product.name}</p>
+        <p className="font-bold pb-3">{product.price}₮</p>
       </div>
+    </Link>
+  ))}
+</div>
+
+
     </div>
   );
 };

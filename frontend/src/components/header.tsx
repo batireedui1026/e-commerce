@@ -9,25 +9,28 @@ import { Button } from "./ui/button";
 import { Images } from "lucide-react";
 import axios from "axios";
 const Header = () => {
-  // const [product, setProduct] = useState({ name: "", price: "", images: "" });
+  
   const { user } = useUser();
-  // console.log("user", user);
-  // const searchProducts = async () => {
-  //   const { name, price, images } = products;
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:8000/api/v1/products`,
-  //       {
-  //         name,
-  //         price,
-  //         images,
-  //       }
-  //     );
-  //     return setProduct(response.data.products);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const [productSearch, setProductSearch] = useState({name: ""})
+  const searchProduct = async() => {
+    
+    const {name} = productSearch;
+    try {
+      const response = await axios.post(`http://localhost:8000/api/v1/products/search`,{
+        name
+      })
+      const filteredProducts = response.data.filter((product: any) =>
+        product.name.toLowerCase().includes(name.toLowerCase()) 
+      );
+      setProductSearch(filteredProducts);
+    } catch (error) {
+      console.log(error);
+      
+    }
+
+  };
+ 
+  
 
   return (
     <div>
@@ -44,9 +47,9 @@ const Header = () => {
         <div>
           <input
             className="border rounded-xl bg-gray-900 w-80 text-center h-10 text-white"
-            placeholder="Бүтээгдэхүүн хайх"
+            placeholder="Бүтээгдэхүүн хайх" onChange={(e) => setProductSearch(e.target.value)} 
           ></input>
-          <CiSearch className="text-white relative bottom-8 left-3 text-xl " />
+          <CiSearch className="text-white relative bottom-8 left-3 text-xl " onClick={searchProduct} />
         </div>
 
         <div className="flex gap-4 items-center">
