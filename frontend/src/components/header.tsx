@@ -1,4 +1,5 @@
 "use client";
+
 import { FaHeart } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
@@ -8,29 +9,26 @@ import { useUser } from "../provider/user-provider";
 import { Button } from "./ui/button";
 import { Images } from "lucide-react";
 import axios from "axios";
+import Searching from "./searching";
+
 const Header = () => {
-  
   const { user } = useUser();
-  const [productSearch, setProductSearch] = useState({name: ""})
-  const searchProduct = async() => {
-    
-    const {name} = productSearch;
+  const [productSearch, setProductSearch] = useState<string>("");
+
+  console.log(productSearch);
+
+  const searchProduct = async () => {
+    // const { name } = productSearch;
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/products/search`,{
-        name
-      })
-      const filteredProducts = response.data.filter((product: any) =>
-        product.name.toLowerCase().includes(name.toLowerCase()) 
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/products/search?name=${productSearch}`
       );
-      setProductSearch(filteredProducts);
+
+      console.log(response);
     } catch (error) {
       console.log(error);
-      
     }
-
   };
- 
-  
 
   return (
     <div>
@@ -47,9 +45,14 @@ const Header = () => {
         <div>
           <input
             className="border rounded-xl bg-gray-900 w-80 text-center h-10 text-white"
-            placeholder="Бүтээгдэхүүн хайх" onChange={(e) => setProductSearch(e.target.value)} 
-          ></input>
-          <CiSearch className="text-white relative bottom-8 left-3 text-xl " onClick={searchProduct} />
+            placeholder="Бүтээгдэхүүн хайх"
+            onChange={(e) => setProductSearch(e.target.value)}
+          />
+
+          <CiSearch
+            className="text-white relative bottom-8 left-3 text-xl "
+            onClick={searchProduct}
+          />
         </div>
 
         <div className="flex gap-4 items-center">
@@ -87,6 +90,7 @@ const Header = () => {
           </Link>
         </div>
       </div>
+      <Searching />
     </div>
   );
 };
