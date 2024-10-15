@@ -9,7 +9,7 @@ const Searching = () => {
           ></img>
           <div className="flex  gap-3 pt-3 flex-col">
             <p>Chunky</p>
-            <p className="font-bold">120’000₮</p>
+            <p className="font-bold">120’0000₮</p>
           </div>
         </div>
       </div>
