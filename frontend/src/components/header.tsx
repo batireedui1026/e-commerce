@@ -12,23 +12,26 @@ import axios from "axios";
 import Searching from "./searching";
 
 const Header = () => {
-  const { user } = useUser();
-  const [productSearch, setProductSearch] = useState<string>("");
+  const { user, setSearch } = useUser();
+  // const [productSearch, setProductSearch] = useState<string>("");
+  // const [searchedProduct, setSearchedProduct] = useState([]);
 
-  console.log(productSearch);
+  // console.log("productSearch", productSearch);
 
-  const searchProduct = async () => {
-    // const { name } = productSearch;
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/products/search?name=${productSearch}`
-      );
+  // const searchProduct = async () => {
+  //   // const { name } = productSearch;
 
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:8000/api/v1/products/search?name=${productSearch}`
+  //     );
+
+  //     // console.log(response.data);
+  //     setSearchedProduct(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div>
@@ -46,13 +49,10 @@ const Header = () => {
           <input
             className="border rounded-xl bg-gray-900 w-80 text-center h-10 text-white"
             placeholder="Бүтээгдэхүүн хайх"
-            onChange={(e) => setProductSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
 
-          <CiSearch
-            className="text-white relative bottom-8 left-3 text-xl "
-            onClick={searchProduct}
-          />
+          <CiSearch className="text-white relative bottom-8 left-3 text-xl " />
         </div>
 
         <div className="flex gap-4 items-center">
@@ -90,8 +90,15 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      <Searching />
     </div>
   );
 };
 export default Header;
+
+// {searchedProduct.map((product) => (
+//   <Searching
+//     name={product.name}
+//     images={product.images}
+//     price={product.price}
+//   />
+// ))}

@@ -1,30 +1,41 @@
 "use client";
+
+import { useUser } from "@/provider/user-provider";
 import axios from "axios";
 import { url } from "inspector";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 
-const Home = async () => {
+const Home = () => {
+  // const [image, setImage] = useState();
+  interface Product {
+    name: string;
+    images: [string];
+    _id: string;
+    price: number;
+  }
+  const { user, search } = useUser();
+  const [products, setProducts] = useState<Product[] | null>(null);
   const getProducts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/products`);
-      // setProducts(response.data);
-      console.log("data", response.data);
-      return response.data.products;
+      const res = await axios.post(`http://localhost:8000/api/v1/products`, {
+        name: search,
+      });
+      if (res.status === 200) {
+        const { arrPro } = res.data;
+        console.log(arrPro);
+        setProducts(arrPro);
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  const products = await getProducts();
 
-  // const save = () => {
-  //   try {
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    getProducts();
+  }, [search]);
 
   return (
     <div>
@@ -35,7 +46,7 @@ const Home = async () => {
         </div>
       </div>
       <div className="grid grid-cols-4 gap-14 max-w-[1400px] mx-auto mt-12 mb-24">
-        {products.map((product) => (
+        {products?.map((product) => (
           <Link href={`/${product._id}`} key={product._id}>
             <div className="rounded">
               <div

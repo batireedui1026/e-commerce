@@ -8,12 +8,16 @@
 // export default router;
 
 import { Router } from "express";
-import { getAllProduct, getProduct, searchProduct } from "../controllers/product-controller";
+import {
+  getAllProduct,
+  getProduct,
+  searchProduct,
+} from "../controllers/product-controller";
 
 const router = Router();
 // /api/v1/products
-router.route("/").get(getAllProduct);
+router.route("/").post(getAllProduct);
 router.route("/:productId").get(getProduct);
-router.route("/search").post(searchProduct)
+router.route("/search").post(searchProduct);
 
 export default router;

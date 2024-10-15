@@ -23,9 +23,19 @@ import { Request, Response } from "express";
 import Product from "../models/product.model";
 
 export const getAllProduct = async (req: Request, res: Response) => {
+  const { name, category, size } = req.body;
+
   try {
-    const products = await Product.find({}).populate("category");
-    res.status(200).json({ message: "success to get all product", products });
+    const searchCriteria: any = {};
+    if (category) searchCriteria.category = category;
+    if (size) searchCriteria.size = size;
+    if (name) {
+      searchCriteria.name = { $regex: name, $options: "i" };
+    }
+
+    const arrPro = await Product.find(searchCriteria);
+
+    res.status(200).json({ message: "success to get all product", arrPro });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "failed to get all product" });
@@ -46,16 +56,13 @@ export const getProduct = async (req: Request, res: Response) => {
 //   const { name, price, description, size, images } = req.query;
 //   try {
 //     const product = await Product.find({ name }).toLowercase()
-    
+
 //   } catch (error) {
 //     console.log(error);
-    
+
 //   }
 
-
 // }
-
-
 
 export const searchProduct = async (req: Request, res: Response) => {
   const { name, price, description, size, images } = req.query;
@@ -63,15 +70,16 @@ export const searchProduct = async (req: Request, res: Response) => {
     const searchCriteria: any = {};
 
     if (name) {
-      searchCriteria.name = { $regex: name, $options: "i" }; 
+      searchCriteria.name = { $regex: name, $options: "i" };
     }
+    console.log("name", name);
 
     if (price) {
       searchCriteria.price = price;
     }
 
     if (description) {
-      searchCriteria.description = { $regex: description, $options: "i" }; 
+      searchCriteria.description = { $regex: description, $options: "i" };
     }
 
     if (size) {
@@ -83,9 +91,9 @@ export const searchProduct = async (req: Request, res: Response) => {
     }
     const products = await Product.find(searchCriteria);
 
-    res.status(200).json(products); 
+    res.status(200).json(products);
   } catch (error) {
-    console.error( error);
+    console.error(error);
     res.status(500).json({ message: "Error searching for products", error });
   }
 };

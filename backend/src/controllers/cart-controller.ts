@@ -40,69 +40,52 @@ export const createCart = async (req: Request, res: Response) => {
     });
   }
 };
-export const getCard = async (req: Request, res: Response) => {
+
+export const getCart = async (req: Request, res: Response) => {
+  const { id } = req.user;
   try {
-    const getAllCard = await Cart.find({}).populate("products.product");
-    res.status(200).json({ message: "Бүх кард харах", AllCard: getAllCard });
-  } catch (error) {
-    console.log("Buh cardiig harahad aldaa garlaa", error);
-    res.status(400).json({ message: "Buh cardiig harahd aldaa garlaa" });
-  }
-};
+    const cart = await Cart.findOne({ user: id }).populate("products.product");
 
-export const deleteCard = async (req: Request, res: Response) => {
-  const { userId, cardOneProductId } = req.body;
-
-  try {
-    const findUserCard = await Cart.findOne({ user: userId });
-
-    if (!findUserCard) {
-      console.log("Энэ хэрэглэгчид сагсалсан бараа байхгүй байна");
-      return res
-        .status(200)
-        .json({ message: "Энэ хэрэглэгчид сагсалсан бараа байхгүй байна" });
-    }
-
-    const findIndex = findUserCard.products.findIndex((item) => {
-      console.log("req body====> findIndex", item.product.toString());
-      return item.product.toString() === cardOneProductId;
+    res.status(200).json({
+      message: "get cart",
+      cart,
     });
-
-    console.log(
-      "req body====>userId, cardOneProductId",
-      userId,
-      cardOneProductId
-    );
-
-    console.log("req body====>findUserCard", findUserCard);
-
-    console.log(
-      "frontoos ирсэн бүтээгдэхүүн хэрэглэгсийн сагсан дотор байгаа юу хэддэх индэкс дотр байна вэ",
-      findIndex
-    );
-    if (findIndex === -1) {
-      console.log("Уг бараа сагсанд байхгүй байна ");
-      return res
-        .status(200)
-        .json({ message: "Уг бараа сагсанд байхгүй байна " });
-    } else {
-      findUserCard.products.splice(findIndex, 1);
-    }
-
-    const updatedCard = await findUserCard.save();
-
-    res
-      .status(200)
-      .json({ message: "Success deleted card ", updatedCard: updatedCard });
   } catch (error) {
-    console.log("Cart ustgahad aldaa garlaa", error);
-    res.status(400).json({ message: "Cart ustgahad aldaa garlaa" });
+    console.log(error);
+    res.status(400).json({
+      message: "failed to get carts",
+    });
   }
 };
 
+export const updateCart = async (req: Request, res: Response) => {
+  const { id } = req.user;
+  const { productId, newQuantity } = req.body;
+  try {
+    // 1. find user cart
+    const cart = await Cart.findOne({ user: id });
+    if (!cart) {
+      return res.status(400).json({
+        message: "not found user",
+      });
+    }
 
+    // 2. find product
+    const findProduct = cart.products.findIndex(
+      (item) => item.product.toString() === productId
+    );
 
-export const updateData = async (req: Request, res: Request) => {
-  const { product, quantity } = req.body;
-  const updatedCard = await Cart.updateOne({ quantity: quantity });
+    cart.products[findProduct].quantity = newQuantity;
+
+    const updatedCart = await cart.save();
+    res.status(200).json({
+      message: "updated cart",
+      updatedCart,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "failed to get carts",
+    });
+  }
 };
