@@ -70,7 +70,7 @@ const Detail = () => {
     // const products = await getProduct();
   };
   useEffect(() => {
-    // getProduct();
+    getProduct();
   }, []);
 
   const purchase = async () => {
@@ -82,15 +82,17 @@ const Detail = () => {
       console.log(error);
     }
   };
-
+const addToCart = () => {
+  
+}
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex justify-between ml-20 mr-60">
         <div className="flex gap-32">
           <div className=" my-40 flex flex-col gap-4 ">
-            {/* {product.images?.map((image) => (
+            {product.images?.map((image) => (
               <img className="w-16 h-24 rounded object-cover" src={image}></img>
-            ))} */}
+            ))}
           </div>
           <div className="my-32">
             <img
