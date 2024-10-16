@@ -1,10 +1,13 @@
 "use client";
+import { useUser } from "@/provider/user-provider";
 import axios from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
-
+import { toast } from "react-toastify";
+import { Product } from "@/lib/types";
+import { formattedPrice } from "@/lib/utils";
 const baraa = [
   {
     ner: "The Prompt Magazine",
@@ -54,8 +57,16 @@ const baraa = [
 ];
 const Detail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<any>({});
-  // const { isNew } = response.data.product;
+  const { user } = useUser();
+  const [product, setProduct] = useState<Product>({
+    _id: "",
+    name: "",
+    price: 0,
+    images: [""],
+    discount: 0,
+  });
+
+  const [productQuantity, setProductQuantity] = useState(1);
 
   const getProduct = async () => {
     try {
@@ -73,18 +84,41 @@ const Detail = () => {
     getProduct();
   }, []);
 
-  const purchase = async () => {
-    const [cart, setCart] = useState({});
+  const addToCart = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/v1/carts`);
-      return setCart(response.data.carts);
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/carts/create-cart`,
+        {
+          userId: "66fa1cc52b9528f4f3b5a0d3",
+          productId: id,
+          quantity: productQuantity,
+        }
+      );
+      console.log("productId", id);
+      console.log("quantity", productQuantity);
+
+      if (response.status === 200) {
+        toast.success("Successfully added to cart");
+      }
     } catch (error) {
-      console.log(error);
+      console.log("сагслахад алдаа гарлаа", error);
+      toast.error("Failed to add to cart");
+      toast.error("Failed to add to cart");
     }
   };
-const addToCart = () => {
-  
-}
+
+  // const purchase = async () => {
+  //   const [cart, setCart] = useState({});
+  //   try {
+  //     const response = await axios.post(`http://localhost:8000/api/v1/carts`);
+  //     return setCart(response.data.carts);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // const addToCart = () => {};
+  console.log("productId", id);
+  console.log("quantity", productQuantity);
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex justify-between ml-20 mr-60">
@@ -97,8 +131,8 @@ const addToCart = () => {
           <div className="my-32">
             <img
               className="w-[426px] h-[641px] rounded-2xl object-cover"
-              src={product.images}
-            ></img>
+              src={product.images[0]}
+            />
           </div>
         </div>
         <div className="my-40 flex flex-col gap-3">
@@ -118,39 +152,38 @@ const addToCart = () => {
             Хэмжээний заавар
           </p>
           <div className="flex gap-3">
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-              S
-            </div>
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-              M
-            </div>
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-              L
-            </div>
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-              XL
-            </div>
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-              XXL
-            </div>
+            {["S", "M", "L", "XL", "XXL"].map((size) => (
+              <div
+                key={size}
+                className="w-11 h-11 rounded-full border text-center items-center pt-2 border-black"
+              >
+                {size}
+              </div>
+            ))}
           </div>
           <div className="flex gap-3 items-center">
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2 border-black">
+            <div
+              className="w-11 h-11 rounded-full border text-center items-center pt-2 border-black"
+              onClick={() => setProductQuantity(productQuantity - 1)}
+            >
               -
             </div>
-            <p>1</p>
-            <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
+            <p>{productQuantity}</p>
+            <div
+              className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black"
+              onClick={() => setProductQuantity(productQuantity + 1)}
+            >
               +
             </div>
           </div>
-          <p className="font-bold text-2xl">{product.price}₮</p>
-          <Link
-            href="/sags"
+          {/* <p className="font-bold text-2xl">{product.price}₮</p> */}
+          <p className="text-xl font-bold">{formattedPrice(product.price)}₮</p>
+          <button
+            onClick={addToCart}
             className="btn btn-primary w-36 h-8 bg-blue-600 rounded-xl text-white"
           >
-            {" "}
             Cагсанд нэмэх
-          </Link>
+          </button>
           <div className="flex gap-3">
             <p>Үнэлгээ</p>
             <p className="w-28 border-b-2">Бүгдийг харах</p>

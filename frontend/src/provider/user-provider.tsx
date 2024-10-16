@@ -11,6 +11,7 @@ import React, {
 } from "react";
 
 interface IUser {
+  _id: string;
   firstname: string;
   email: string;
 }
@@ -23,7 +24,11 @@ interface IContext {
 }
 
 export const UserContext = createContext<IContext>({
-  user: null,
+  user: {
+    _id: "",
+    firstname: "",
+    email: "",
+  },
   setUser: () => {},
   setSearch: () => {},
   search: null,
@@ -32,33 +37,35 @@ export const UserContext = createContext<IContext>({
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [search, setSearch] = useState<string | null>(null);
-  // const fetchUserData = async () => {
-  //   try {
-  //     console.log("GET-USER");
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.get(
-  //       `http://localhost:8000/api/v1/auth/current-user`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
+  const fetchUserData = async () => {
+    try {
+      console.log("GET-USER");
+      const token = localStorage.getItem("token") || "";
+      console.log("TOKEN", token);
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/auth/current-user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("GET-USER-2");
+      if (response.status === 200) {
+        setUser(response.data.user);
+        console.log("RD", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
-  //     if (response.status === 200) {
-  //       setUser(response.data.user);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user data:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!user) {
-  //   }
-  //   fetchUserData();
-  // }, [user?._id]);
-
+  useEffect(() => {
+    // if (!user) {
+    // }
+    fetchUserData();
+  }, []);
+  console.log("USER", user);
   return (
     <UserContext.Provider value={{ user, setUser, setSearch, search }}>
       {children}

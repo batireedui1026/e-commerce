@@ -57,7 +57,9 @@ const Header = () => {
 
         <div className="flex gap-4 items-center">
           <FaHeart className="text-white" />
-          <FaShoppingCart className="text-white" />
+          <Link href={"/sags"}>
+            <FaShoppingCart className="text-white" />
+          </Link>
 
           {user && <img src={""} alt="'profile" />}
           {!user && (

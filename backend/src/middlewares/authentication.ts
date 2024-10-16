@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { decodeToken } from "../utils/jwt";
+import jwt from "jsonwebtoken";
 
 declare global {
   namespace Express {
     interface Request {
-      user: any;
+      user: {
+        id: string | string[];
+      };
     }
   }
 }
@@ -19,9 +22,11 @@ export const authentication = (
       .status(401)
       .json({ message: "Та энэ үйдлийг хийхийн тулд нэвтэрнэ үү" });
   }
-
+  console.log("req ees irsen token", req.headers.authorization);
   const token = req.headers.authorization.split(" ")[1];
+  console.log("req ees irse zadalsan token", token);
   const user = decodeToken(token);
-  req.user = user;
+  console.log("user", user);
+  req.user = user as any;
   next();
 };

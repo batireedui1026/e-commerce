@@ -1,81 +1,114 @@
+"use client";
+import { Cart } from "@/lib/types";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Card, CardContent } from "@/components/ui/card";
+
+import { toast } from "react-toastify";
 const Sags = () => {
-  return <div>
+  const [cartData, setCartData] = useState<Cart>([
+    {
+      product: { _id: "", name: "", price: 0, images: [""], discount: 0 },
+      quantity: 0,
+    },
+  ]);
+
+  const getCartData = async () => {
+    try {
+      // const userToken = localStorage.getItem("token");
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/carts/get-cart`
+        // {
+        //   headers: { Authorization: `Bearer ${userToken}` },
+        // }
+      );
+      if (response.status === 200) {
+        setCartData(response.data.cart);
+        console.log("Sagsnii baraa harah amjilttai", response.data.cart);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to add to cart");
+    }
+  };
+  useEffect(() => {
+    getCartData();
+  }, []);
+
+  const updateQuanity = async (productId: string, newQuantity: number) => {
+    setCartData((prevCart) =>
+      prevCart.map((item) =>
+        item.product._id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      )
+    );
+    const userToken = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/v1/carts/update-cart`,
+        {
+          productId,
+          newQuantity,
+        },
+        { headers: { Authorization: `Bearer ${userToken}` } }
+      );
+
+      if (response.status === 200) {
+        toast.success("Successfully updated");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to add to cart");
+    }
+  };
+  return (
     <div>
-      <h1>step</h1>
+      {cartData.map((product) => {
+        return (
+          <Card className="p-4 rounded-2xl w-1/2 mb-2" key={product?._id}>
+            <CardContent className="flex justify-between p-0">
+              <div className="flex gap-6">
+                <img
+                  src={product?.images}
+                  alt=""
+                  className="w-32 h-28 rounded-2xl"
+                />
+                <div>
+                  <p className="font-normal text-base">{product?.name}</p>
+                  <div className="flex gap-5">
+                    <p
+                      className="border border-solid border-black px-2 rounded-full cursor-pointer"
+                      onClick={() =>
+                        updateQuanity(
+                          product._id,
+                          Math.max(0, product?.quantity - 1)
+                        )
+                      }
+                    >
+                      -
+                    </p>
+                    <p>{product?.quantity}</p>
+                    <p
+                      className="border border-solid border-black px-2 rounded-full cursor-pointer"
+                      onClick={() =>
+                        updateQuanity(product?._id, product?.quantity + 1)
+                      }
+                    >
+                      +
+                    </p>
+                  </div>
+                  <p className="mt-1 mb-2 text-sm font-bold">
+                    {product.price.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
-    <div className="max-w-[638px] m-auto">
-      <h1 className="font-bold">1. Carc <span>4</span></h1>
-      <div>
-        <div className="flex justify-between border border-rounded mt-5">
-          <img src="https://s3-alpha-sig.figma.com/img/6b65/edf5/a857be2cdc56b0c4d9935e213699b666?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=qqxM8~e0-x5Hh1AYO2y4StBpc681L1qSzWRj4MWQJQAqRqb6qJtrVJEyhNaXyxJ1oB1j2tyGmGUyOV7Ygby22Xe2DciPkd6X2lw9AVayX3UNimQqp0L3zSNLHNAwQR3V0CtQEGN9~w8cMUZtjNmZ4j-wGGxVoENcQ2v3peBOfT1aPRMMvbpn3tekx2bBiwQaWwlJ8NBOQnKXB7rnnQKTG9rjK7rtGOZlz2P0CnTbEYCgLOQJBxboYRMJypIducqEfEzWy08HMRKF-EXSEh7XsBdWrcVavhE4TU-3rDqJSiSQSeyAeuzcpTxslhPG16tlQtZTS55RX5h29sSt9fpWNw__" className="w-32 h-32 object-cover rounded my-3 ml-3"></img>
-          <div className="flex flex-col gap-3 pt-3">
-            <p>Chunky</p>
-            <div className="flex gap-3 items-center">
-              <div className="w-11 h-11 rounded-full border text-center items-center pt-2 border-black">
-                -
-              </div>
-              <p>1</p>
-               <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-                 +
-              </div>
-             </div>
-             <p className="font-bold">120’000₮</p>
-          </div>
-          <FaRegTrashAlt className="text-2xl mr-2 mt-2" />
-         </div>
-        </div>
-
-        <div>
-        <div className="flex justify-between border border-rounded mt-5">
-          <img src="https://s3-alpha-sig.figma.com/img/6b65/edf5/a857be2cdc56b0c4d9935e213699b666?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=qqxM8~e0-x5Hh1AYO2y4StBpc681L1qSzWRj4MWQJQAqRqb6qJtrVJEyhNaXyxJ1oB1j2tyGmGUyOV7Ygby22Xe2DciPkd6X2lw9AVayX3UNimQqp0L3zSNLHNAwQR3V0CtQEGN9~w8cMUZtjNmZ4j-wGGxVoENcQ2v3peBOfT1aPRMMvbpn3tekx2bBiwQaWwlJ8NBOQnKXB7rnnQKTG9rjK7rtGOZlz2P0CnTbEYCgLOQJBxboYRMJypIducqEfEzWy08HMRKF-EXSEh7XsBdWrcVavhE4TU-3rDqJSiSQSeyAeuzcpTxslhPG16tlQtZTS55RX5h29sSt9fpWNw__" className="w-32 h-32 object-cover rounded my-3 ml-3"></img>
-          <div className="flex flex-col gap-3 pt-3">
-            <p>Chunky</p>
-            <div className="flex gap-3 items-center">
-              <div className="w-11 h-11 rounded-full border text-center items-center pt-2 border-black">
-                -
-              </div>
-              <p>1</p>
-               <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-                 +
-              </div>
-             </div>
-             <p className="font-bold">120’000₮</p>
-          </div>
-          <FaRegTrashAlt className="text-2xl mr-2 mt-2" />
-        </div>
-        </div>
-
-        <div>
-        <div className="flex justify-between border border-rounded mt-5">
-          <img src="https://s3-alpha-sig.figma.com/img/6b65/edf5/a857be2cdc56b0c4d9935e213699b666?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=qqxM8~e0-x5Hh1AYO2y4StBpc681L1qSzWRj4MWQJQAqRqb6qJtrVJEyhNaXyxJ1oB1j2tyGmGUyOV7Ygby22Xe2DciPkd6X2lw9AVayX3UNimQqp0L3zSNLHNAwQR3V0CtQEGN9~w8cMUZtjNmZ4j-wGGxVoENcQ2v3peBOfT1aPRMMvbpn3tekx2bBiwQaWwlJ8NBOQnKXB7rnnQKTG9rjK7rtGOZlz2P0CnTbEYCgLOQJBxboYRMJypIducqEfEzWy08HMRKF-EXSEh7XsBdWrcVavhE4TU-3rDqJSiSQSeyAeuzcpTxslhPG16tlQtZTS55RX5h29sSt9fpWNw__" className="w-32 h-32 object-cover rounded my-3 ml-3"></img>
-          <div className="flex flex-col gap-3 pt-3">
-            <p>Chunky</p>
-            <div className="flex gap-3 items-center">
-              <div className="w-11 h-11 rounded-full border text-center items-center pt-2 border-black">
-                -
-              </div>
-              <p>1</p>
-               <div className="w-11 h-11 rounded-full border text-center items-center pt-2  border-black">
-                 +
-              </div>
-             </div>
-             <p className="font-bold">120’000₮</p>
-          </div>
-          <FaRegTrashAlt className="text-2xl mr-2 mt-2" />
-        </div>
-
-        </div>
-        <div className="flex justify-between mt-5">
-          <p>Нийт төлөх дүн:</p>
-          <p className="font-bold">360’000₮</p>
-        </div>
-        <button className="w-40 h-7 bg-blue-600 rounded text-white mt-5 ">Худалдаж авах</button>
-       
-      
-    </div>
-  </div>;
+  );
 };
 export default Sags;
-
-

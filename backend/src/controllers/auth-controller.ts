@@ -182,10 +182,22 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-export const currentUser = async (req: Request, res: Response) => {
-  const { id } = req.user;
-  const user = await User.findById(id);
-  res.status(200).json({ user, message: "Success" });
+interface IGetUserAuthInfoRequest extends Request {
+  user: any;
+}
+
+export const currentUser = async (
+  req: IGetUserAuthInfoRequest,
+  res: Response
+) => {
+  try {
+    const { id: userId } = req.user;
+    const user = await User.findById(userId);
+    console.log("ID", userId);
+    res.status(200).json({ user, message: "Success" });
+  } catch (error) {
+    res.status(400).json({ message: "Failed to get user data" });
+  }
 };
 
 export const forgetPassword = async (req: Request, res: Response) => {
