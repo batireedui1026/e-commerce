@@ -4,7 +4,7 @@ export type Product = {
   description?: string;
   price: number;
   size?: string;
-  images: [string];
+  images: string[];
   isNew?: boolean;
   quantity?: number;
   discount: number;
@@ -21,7 +21,7 @@ export type Category = {
   updatedAt?: Date;
 };
 
-export type Cart = {
-  product: Product;
-  quantity: number;
-}[];
+export interface Cart {
+  products: [{ product: Product; quantity: number }];
+  totalAmount: number;
+}

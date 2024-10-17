@@ -56,7 +56,9 @@ const Home = () => {
                 <CiHeart className="text-3xl absolute top-3 right-3 text-red-500 cursor-pointer" />
               </div>
               <p>{product.name}</p>
-              <p className="font-bold pb-3">{product.price}₮</p>
+              <p className="font-bold pb-3">
+                {product.price.toLocaleString()}₮
+              </p>
             </div>
           </Link>
         ))}

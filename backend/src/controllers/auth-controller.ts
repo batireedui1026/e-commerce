@@ -133,31 +133,67 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/send-email";
 import crypto from "crypto";
+import { generateToken } from "../utils/jwt";
 
-// Login function
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Хоосон утга байж болохгүй." });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "User does not exist" });
-    }
-
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET || "default_secret",
-      {
-        expiresIn: "1h",
+      return res
+        .status(400)
+        .json({ message: "Бүртгэлтэй хэрэглэгч олдсонгүй" });
+    } else {
+      const isCheck = bcrypt.compareSync(password, user.password.toString());
+      if (!isCheck) {
+        return res.status(400).json({
+          message: "Хэрэглэгчийн имэйл эсвэл нууц үг тохирохгүй байна.",
+        });
+      } else {
+        const token = generateToken({ id: user._id });
+        const { firstname, profile_img, email } = user;
+        res.status(200).json({
+          message: "success",
+          token,
+          user: { firstname, profile_img, email },
+        });
       }
-    );
-
-    res.status(200).json({ message: "Success", token });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    console.log("error", error);
+    res.status(400).json({ message: "Client error" });
   }
 };
+
+// Login function
+// export const login = async (req: Request, res: Response) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       return res.status(400).json({ message: "User does not exist" });
+//     }
+
+//     const token = jwt.sign(
+//       { id: user._id },
+//       process.env.JWT_SECRET || "default_secret",
+//       {
+//         expiresIn: "24h",
+//       }
+//     );
+
+//     res.status(200).json({ message: "Success", token });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 export const signup = async (req: Request, res: Response) => {
   try {

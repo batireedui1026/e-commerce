@@ -42,10 +42,10 @@ export const createCart = async (req: Request, res: Response) => {
 };
 
 export const getCart = async (req: Request, res: Response) => {
-  // const { id } = req.user;
+  const { id } = req.user;
   try {
     // const cart = await Cart.findOne({ user: id }).populate("products.product");
-    const cart = await Cart.find({}).populate("products.product");
+    const cart = await Cart.findOne({}).populate("products.product");
     res.status(200).json({
       message: "get cart",
       cart,

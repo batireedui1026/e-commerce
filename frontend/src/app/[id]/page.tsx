@@ -89,7 +89,7 @@ const Detail = () => {
       const response = await axios.post(
         `http://localhost:8000/api/v1/carts/create-cart`,
         {
-          userId: "66fa1cc52b9528f4f3b5a0d3",
+          userId: user?._id,
           productId: id,
           quantity: productQuantity,
         }
@@ -103,20 +103,9 @@ const Detail = () => {
     } catch (error) {
       console.log("сагслахад алдаа гарлаа", error);
       toast.error("Failed to add to cart");
-      toast.error("Failed to add to cart");
     }
   };
 
-  // const purchase = async () => {
-  //   const [cart, setCart] = useState({});
-  //   try {
-  //     const response = await axios.post(`http://localhost:8000/api/v1/carts`);
-  //     return setCart(response.data.carts);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const addToCart = () => {};
   console.log("productId", id);
   console.log("quantity", productQuantity);
   return (

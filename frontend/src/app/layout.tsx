@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserProvider from "../provider/user-provider";
+import { ProfileProvider } from "@/components/context/user-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,10 +35,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserProvider>
-          <ToastContainer />
-          <Header />
-          {children}
-          <Footer />
+          <ProfileProvider>
+            <ToastContainer />
+            <Header />
+            {children}
+            <Footer />
+          </ProfileProvider>
         </UserProvider>
       </body>
     </html>
