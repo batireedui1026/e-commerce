@@ -4,15 +4,17 @@ import { FaHeart } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useUser } from "../provider/user-provider";
 import { Button } from "./ui/button";
 import { Images } from "lucide-react";
 import axios from "axios";
 import Searching from "./searching";
+import { ProfileContext } from "./context/user-context";
 
 const Header = () => {
   const { user, setSearch } = useUser();
+  const { cartData, setCartData, updateQuantity } = useContext(ProfileContext);
   // const [productSearch, setProductSearch] = useState<string>("");
   // const [searchedProduct, setSearchedProduct] = useState([]);
 
@@ -58,7 +60,10 @@ const Header = () => {
         <div className="flex gap-4 items-center">
           <FaHeart className="text-white" />
           <Link href={"/sags"}>
-            <FaShoppingCart className="text-white" />
+            <FaShoppingCart className="text-white relative" />
+            <p className="bg-blue-500 rounded-full text-white text-[9px] text-center px-1 py-[0.5px]  absolute top-[-11px] right-[-9px]">
+            {cartData?.length}
+          </p>
           </Link>
 
           {user && <img src={""} alt="'profile" />}

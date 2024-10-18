@@ -156,11 +156,11 @@ export const login = async (req: Request, res: Response) => {
         });
       } else {
         const token = generateToken({ id: user._id });
-        const { firstname, profile_img, email } = user;
+        const { firstname,  email } = user;
         res.status(200).json({
           message: "success",
           token,
-          user: { firstname, profile_img, email },
+          user: { firstname, email },
         });
       }
     }
