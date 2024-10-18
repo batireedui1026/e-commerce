@@ -15,25 +15,25 @@ import { ProfileContext } from "./context/user-context";
 const Header = () => {
   const { user, setSearch } = useUser();
   const { cartData, setCartData, updateQuantity } = useContext(ProfileContext);
-  // const [productSearch, setProductSearch] = useState<string>("");
-  // const [searchedProduct, setSearchedProduct] = useState([]);
+  const [productSearch, setProductSearch] = useState<string>("");
+  const [searchedProduct, setSearchedProduct] = useState([]);
 
-  // console.log("productSearch", productSearch);
+  console.log("productSearch", productSearch);
 
-  // const searchProduct = async () => {
-  //   // const { name } = productSearch;
+  const searchProduct = async () => {
+    // const { name } = productSearch;
 
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:8000/api/v1/products/search?name=${productSearch}`
-  //     );
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/products/search?name=${productSearch}`
+      );
 
-  //     // console.log(response.data);
-  //     setSearchedProduct(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      // console.log(response.data);
+      setSearchedProduct(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -58,12 +58,17 @@ const Header = () => {
         </div>
 
         <div className="flex gap-4 items-center">
-          <FaHeart className="text-white" />
-          <Link href={"/sags"}>
-            <FaShoppingCart className="text-white relative" />
-            <p className="bg-blue-500 rounded-full text-white text-[9px] text-center px-1 py-[0.5px]  absolute top-[-11px] right-[-9px]">
-            {cartData?.length}
-          </p>
+          <Link href="/save">
+            <FaHeart className="text-white" />
+          </Link>
+
+          <Link href="/sags" className="relative">
+            <FaShoppingCart className="text-white" />
+            {cartData?.products?.length > 0 && (
+              <p className="bg-blue-500 rounded-full text-white text-[9px] text-center px-1 py-[0.5px] absolute top-[-11px] right-[-9px]">
+                {cartData.products.length}
+              </p>
+            )}
           </Link>
 
           {user && <img src={""} alt="'profile" />}

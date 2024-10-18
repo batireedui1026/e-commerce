@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 interface ProfileContextType {
   cartData: Cart;
   setCartData: (cartData: Cart) => void;
-  updateQuantity:  (productId: string, newQuantity: number) => void; 
+  updateQuantity: (productId: string, newQuantity: number) => void;
 }
 export const ProfileContext = createContext<ProfileContextType>({
   cartData: {
@@ -28,7 +28,7 @@ export const ProfileContext = createContext<ProfileContextType>({
     totalAmount: 0,
   },
   setCartData: (cartData: Cart) => {},
-  updateQuantity: (productId: string, newQuantity: number) => {}
+  updateQuantity: (productId: string, newQuantity: number) => {},
 });
 
 export const ProfileProvider = ({

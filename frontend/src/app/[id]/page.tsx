@@ -106,6 +106,28 @@ const Detail = () => {
     }
   };
 
+  const addToSave = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/carts/create-cart`,
+        {
+          userId: user?._id,
+          productId: id,
+          quantity: productQuantity,
+        }
+      );
+      console.log("productId", id);
+      console.log("quantity", productQuantity);
+
+      if (response.status === 200) {
+        toast.success("Successfully added to save");
+      }
+    } catch (error) {
+      console.log("Хадгалахад алдаа гарлаа", error);
+      toast.error("Failed to add to save");
+    }
+  };
+
   console.log("productId", id);
   console.log("quantity", productQuantity);
   return (
@@ -134,7 +156,7 @@ const Detail = () => {
           )}
 
           <p className="flex text-2xl font-bold items-center gap-3">
-            {product?.name} <CiHeart />
+            {product?.name} <CiHeart onClick={addToSave} />
           </p>
           {/* <p>Зэрлэг цэцгийн зурагтай даавуун цамц</p> */}
           <p className="border-bottom-1px w-40 border-b-2 text-black">
